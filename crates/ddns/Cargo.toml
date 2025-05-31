@@ -1,6 +1,6 @@
 [package]
 name = "ddns"
-description = "🌐 <strong>Rust Dynamic-DNS in one binary</strong> — detects your public IP and keeps <em>multiple</em> DNS providers up-to-date, with a built-in dashboard and zero external dependencies."
+description = "Rust Dynamic-DNS (DDNS) daemon that detects your public IP and automatically upserts A/AAAA records on Cloudflare or custom providers, featuring a self-hosted web dashboard and zero external dependencies."
 version = "0.1.0"
 edition = { workspace = true }
 license = { workspace = true }
@@ -9,6 +9,7 @@ repository = { workspace = true }
 homepage = { workspace = true }
 documentation = { workspace = true }
 exclude = { workspace = true }
+readme = "../../README.md"
 
 [[bin]]
 name = "ddns"
