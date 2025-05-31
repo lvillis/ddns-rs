@@ -1,17 +1,17 @@
-<!-- ─── Language Switch & ToC (top-right) ────────────────────────── -->
+<!-- ─── 语言切换 & 目录（右上角） ─────────────────────────────── -->
 <div align="right">
 
-<a aria-disabled="true" style="color:#999;text-decoration:none;">🇺🇸 English</a> ·
-<a href="README.zh-CN.md">🇨🇳 中文</a>
+<a href="README.md">🇺🇸 English</a> ·
+<a aria-disabled="true" style="color:#999;text-decoration:none;">🇨🇳 中文</a>
 
 <br/>
-Table of Contents ↗️
+目录 ↗️
 </div>
 
 <h1 align="center"><code>ddns-rs</code></h1>
 
 <p align="center">
-  🌐 <strong>Rust Dynamic-DNS in one binary</strong> — detects your public IP and keeps <em>multiple</em> DNS providers up-to-date, with a built-in dashboard and zero external dependencies.
+  🌐 <strong>Rust 动态 DNS 一体化工具</strong> — 自动侦测公网 IP，并同时更新 <em>多家</em> DNS 解析记录；内置仪表盘，零额外运行依赖。
 </p>
 
 <div align="center">
@@ -27,43 +27,42 @@ Table of Contents ↗️
 
 ---
 
-## ✨ Features
+## ✨ 功能亮点
 
-| Feature                    | Description                                                          |
-|----------------------------|----------------------------------------------------------------------|
-| **Multi-provider upsert**  | Built-in Cloudflare & Aliyun drivers; add your own via feature flags |
-| **Pluggable IP detectors** | HTTP · local interface · custom shell, with priority chain           |
-| **Cron-based scheduler**   | Standard 6-field cron (second precision) + concurrency & back-off    |
-| **Self-hosted dashboard**  | Tailwind + Alpine, dark/light auto; Cookie & Bearer auth supported   |
-| **Zero runtime deps**      | Single static binary or multi-arch Docker image (< 10 MB)            |
-| **Env-override ready**     | Any TOML key can be overridden via `DDNS__SECTION__KEY`              |
+| 功能                          | 说明                                                                 |
+|-------------------------------|----------------------------------------------------------------------|
+| **多云厂商变更 (upsert)**     | 内置 Cloudflare & Aliyun 驱动；亦可通过 feature flag 添加自定义驱动 |
+| **可插拔 IP 探测器**          | HTTP · 本机网卡 · 自定义 Shell，支持优先级链                         |
+| **基于 Cron 的调度器**        | 6 字段标准 Cron（秒级）+ 并发控制 + 退避重试                         |
+| **自托管仪表盘**              | Tailwind + Alpine，自动深浅主题；支持 Cookie 和 Bearer 认证          |
+| **零运行依赖**                | 静态单文件可执行或多架构 Docker 镜像（< 10 MB）                      |
+| **环境变量覆盖**              | 任何 TOML 键都可用 `DDNS__SECTION__KEY` 覆盖                        |
 
-
-## 🖼 Architecture
+## 🖼 架构示意
 
 ```mermaid
 graph TD
 %% ── Client Layer ───────────────────────
-    subgraph "Client"
-        Browser["Web Browser<br/><sub>Dashboard UI</sub>"]
-        ApiTool["REST Client / cURL"]
+    subgraph "客户端"
+        Browser["浏览器<br/><sub>Dashboard UI</sub>"]
+        ApiTool["REST 客户端 / cURL"]
     end
     class Browser,ApiTool client;
 
 %% ── Core Daemon ────────────────────────
-    subgraph "ddns-rs Daemon"
-        HTTP["HTTP Server<br/><sub>axum 0.8</sub>"]
-        Scheduler["Scheduler<br/><sub>cron + back-off</sub>"]
-        Detector["IP Detector<br/><sub>HTTP • NIC • Shell</sub>"]
-        Status["Shared Status<br/><sub>Arc&lt;RwLock&gt;</sub>"]
+    subgraph "ddns-rs 守护进程"
+        HTTP["HTTP 服务<br/><sub>axum 0.8</sub>"]
+        Scheduler["任务调度<br/><sub>cron + 回退</sub>"]
+        Detector["IP 探测<br/><sub>HTTP • NIC • Shell</sub>"]
+        Status["共享状态<br/><sub>Arc&lt;RwLock&gt;</sub>"]
     end
     class HTTP,Scheduler,Detector,Status daemon;
 
 %% ── Provider Layer ─────────────────────
-    subgraph "DNS Providers"
+    subgraph "DNS 服务商"
         Cloudflare
         Aliyun
-        Custom["Your Driver"]
+        Custom["自定义驱动"]
     end
     class Cloudflare,Aliyun,Custom provider;
 

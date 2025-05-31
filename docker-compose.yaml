@@ -1,7 +1,7 @@
 services:
-  ddns:
-    container_name: ddns
-    image: ddns:latest
+  ddns-rs:
+    container_name: ddns-rs
+    image: docker.io/lvillis/ddns-rs:latest
     volumes:
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
