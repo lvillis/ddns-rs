@@ -1,0 +1,7 @@
+services:
+  ddns:
+    container_name: ddns
+    image: ddns:latest
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped

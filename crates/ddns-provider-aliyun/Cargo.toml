@@ -1,0 +1,31 @@
+[package]
+name = "ddns-provider-aliyun"
+description = "Aliyun DNS provider for ddns-rs (A / AAAA record upsert)."
+version = "0.1.0"
+edition = { workspace = true }
+license = { workspace = true }
+authors = { workspace = true }
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = { workspace = true }
+exclude = { workspace = true }
+
+[dependencies]
+async-trait = { workspace = true }
+reqwest = { workspace = true, features = ["json"] }
+serde_json = { workspace = true }
+tracing = { workspace = true }
+anyhow = { workspace = true }
+once_cell = { workspace = true }
+chrono = { workspace = true, default-features = false, features = ["clock"] }
+
+hmac = "0.12"
+sha1 = "0.10"
+base64 = "0.22.1"
+percent-encoding = "2.3.1"
+uuid = { version = "1.17.0", features = ["v4"] }
+
+ddns-provider = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }

@@ -1,0 +1,62 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/ddns",
+    "crates/ddns-core",
+    "crates/ddns-provider",
+    "crates/ddns-provider-aliyun",
+    "crates/ddns-provider-cloudflare",
+]
+
+[workspace.package]
+authors = ["lvillis<lvillis@outlook.com>"]
+homepage = "https://github.com/lvillis/ddns-rs"
+repository = "https://github.com/lvillis/ddns-rs"
+documentation = "https://github.com/lvillis/ddns-rs/blob/main/README.md"
+edition = "2024"
+rust-version = "1.87"
+license = "MIT"
+exclude = [
+    "/docs/",
+    "/tests/",
+    "/.config/",
+    "/.github/",
+    "/.justfile",
+    "/rust-toolchain.toml",
+    "/.gitignore",
+    "Dockerfile",
+    "docker-compose.yaml"
+]
+
+[workspace.dependencies]
+anyhow = "1.0.98"
+async-trait = "0.1.88"
+chrono = { version = "0.4.41", default-features = false }
+once_cell = "1.21.3"
+reqwest = { version = "0.12.18", default-features = false, features = ["rustls-tls"] }
+serde = { version = "1.0.219", features = ["derive"] }
+serde_json = "1.0.140"
+tokio = { version = "1.45.1", features = ["rt-multi-thread", "macros", "signal", "process"] }
+tracing = "0.1.41"
+thiserror = "2.0.12"
+
+ddns-core = { path = "crates/ddns-core", version = "0.1.0", default-features = false }
+ddns-provider = { path = "crates/ddns-provider", version = "0.1.0" }
+ddns-provider-aliyun = { path = "crates/ddns-provider-aliyun", version = "0.1.0" }
+ddns-provider-cloudflare = { path = "crates/ddns-provider-cloudflare", version = "0.1.0" }
+
+[workspace.lints.clippy]
+print_stdout = "warn"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = true
+
+[workspace.metadata.release]
+shared-version = true
+tag-prefix = ""
+tag-name = "{{prefix}}{{version}}"
+tag-message = "chore: release version {{version}}"
+pre-release-commit-message = "chore: release version {{version}}"
+pre-release-hook = ["git", "cliff", "--workdir", "../", "--output", "../CHANGELOG.md", "--tag", "{{version}}"]

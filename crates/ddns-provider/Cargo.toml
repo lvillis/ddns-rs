@@ -1,0 +1,17 @@
+# /crates/ddns-provider/Cargo.toml
+[package]
+name = "ddns-provider"
+description = "Common traits and error types for pluggable DNS providers."
+version = "0.1.0"
+edition = { workspace = true }
+license = { workspace = true }
+authors = { workspace = true }
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = { workspace = true }
+exclude = { workspace = true }
+
+[dependencies]
+async-trait = { workspace = true }
+thiserror = { workspace = true }
+reqwest = { workspace = true }

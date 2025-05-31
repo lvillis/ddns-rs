@@ -1,0 +1,173 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>DDNS Dashboard</title>
+
+<!-- Tailwind CDN (class-mode dark support) -->
+<script>window.tailwind={config:{darkMode:'class'}}</script>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+
+<!-- Alpine.js -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<body x-data="dash()" x-init="init()"
+      class="min-h-screen flex flex-col antialiased
+             bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
+
+<!-- ── top bar ── -->
+<header
+        class="h-14 flex items-center justify-between px-6
+           bg-white/75 dark:!bg-gray-800/75 backdrop-blur-lg
+           border-b border-gray-200 dark:border-gray-700 shadow-sm">
+    <h1 class="flex items-center gap-2 text-lg font-semibold text-sky-600">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24"><path d="M12 2v20M2 12h20"/></svg>
+        DDNS Dashboard
+    </h1>
+
+    <div class="flex items-center gap-2">
+        <!-- dark / light toggle -->
+        <button @click="toggleDark"
+                class="p-1.5 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
+            <svg x-show="!dark" class="w-5 h-5" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24"><path
+                    d="M4 6h.01M12 2v2M20 6h.01M2 12H4M20 12h2M4 18h.01M12 20v2M20 18h.01"/></svg>
+            <svg x-show="dark" class="w-5 h-5" fill="none"
+                 stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24"><path
+                    d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+
+        <!-- logout -->
+        <button @click="logout"
+                class="px-3 h-8 rounded-md bg-rose-100 text-rose-600 text-sm
+                     hover:bg-rose-200 dark:bg-rose-600/20 dark:text-rose-300">
+            Logout
+        </button>
+    </div>
+</header>
+
+<!-- ── main area ── -->
+<main class="flex-1 overflow-y-auto p-6">
+    <div class="max-w-6xl mx-auto grid gap-6 lg:grid-cols-2 2xl:grid-cols-3">
+
+        <!-- overview card -->
+        <section
+                class="rounded-xl p-6 bg-white/90 dark:!bg-gray-800/90
+               border border-gray-200 dark:border-gray-700
+               shadow-md shadow-gray-900/10 dark:shadow-black/40">
+            <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">🌐 Overview</h2>
+            <dl class="space-y-1 text-sm">
+                <div class="flex items-center justify-between">
+                    <dt class="text-gray-500">Current IP</dt>
+                    <dd x-text="status.current_ip ?? '…'"></dd>
+                </div>
+                <div class="flex items-center justify-between">
+                    <dt class="text-gray-500">Next schedule</dt>
+                    <dd x-text="fmt(status.next_tick)"></dd>
+                </div>
+                <div class="flex items-center justify-between">
+                    <dt class="text-gray-500">Server time</dt>
+                    <dd x-text="fmt(status.now)"></dd>
+                </div>
+            </dl>
+        </section>
+
+        <!-- provider status card -->
+        <section
+                class="rounded-xl p-6 bg-white/90 dark:!bg-gray-800/90
+               border border-gray-200 dark:border-gray-700
+               shadow-md shadow-gray-900/10 dark:shadow-black/40 lg:row-span-2">
+            <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">Provider Status</h2>
+            <div class="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
+                <template x-for="([name,v]) in Object.entries(status.providers)" :key="name">
+                    <div class="flex items-center justify-between py-1">
+                        <span class="font-mono pr-4 break-all" x-text="name"></span>
+
+                        <!-- success -->
+                        <template x-if="v.last_ok">
+                <span class="inline-flex items-center gap-1 text-emerald-600">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                  <span x-text="fmt(v.last_ok)"></span>
+                </span>
+                        </template>
+                        <!-- never succeeded -->
+                        <template x-if="!v.last_ok">
+                <span class="inline-flex items-center gap-1 text-gray-400">
+                  <span class="w-2 h-2 rounded-full bg-gray-400"></span>
+                  never
+                </span>
+                        </template>
+                        <!-- error -->
+                        <template x-if="v.last_err">
+                <span class="inline-flex items-center gap-1 text-rose-400">
+                  <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+                  <span x-text="v.last_err"></span>
+                </span>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </section>
+
+        <!-- log card -->
+        <section id="log"
+                 class="rounded-xl p-6 bg-black text-lime-400 font-mono text-xs
+               border border-gray-800 shadow-md shadow-gray-900/40
+               whitespace-pre-wrap break-words overflow-auto
+               lg:col-span-2 2xl:col-span-3 max-h-[280px]"></section>
+    </div>
+</main>
+
+<!-- Alpine logic -->
+<script>
+    function dash(){
+        const MAX_LOG=500;
+        return{
+            dark:false,
+            status:{providers:{}},
+            log:[],
+            fmt:t=>t?new Date(t).toLocaleString():'—',
+
+            toggleDark(){
+                this.dark=!this.dark;
+                document.documentElement.classList.toggle('dark',this.dark);
+                localStorage.ddns_dark=this.dark?'dark':'light';
+            },
+            logout(){
+                document.cookie='ddns_token=;Path=/;Max-Age=0';
+                location.replace('/login');
+            },
+
+            init(){
+                const pref=localStorage.ddns_dark??'auto';
+                this.dark=pref==='auto'
+                    ?matchMedia('(prefers-color-scheme: dark)').matches
+                    :pref==='dark';
+                document.documentElement.classList.toggle('dark',this.dark);
+
+                fetch('/api/status')
+                    .then(r=>r.ok?r.json():Promise.reject())
+                    .then(d=>this.status=d)
+                    .catch(()=>location.replace('/login'));
+
+                const es=new EventSource('/api/events');
+                es.onmessage=e=>{
+                    const d=JSON.parse(e.data);
+                    if(d.type==='status') this.status=d.payload;
+                    if(d.type==='log'){
+                        this.log.push(d.payload);
+                        if(this.log.length>MAX_LOG) this.log.shift();
+                        requestAnimationFrame(()=>{
+                            const el=document.getElementById('log');
+                            el.textContent=this.log.join('\n');
+                            el.scrollTop=el.scrollHeight;
+                        });
+                    }
+                };
+                es.onerror=()=>{es.close();location.replace('/login')};
+            }
+        }
+    }
+</script>
+</body>

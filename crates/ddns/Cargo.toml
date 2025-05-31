@@ -1,0 +1,33 @@
+[package]
+name = "ddns"
+description = "🌐 <strong>Rust Dynamic-DNS in one binary</strong> — detects your public IP and keeps <em>multiple</em> DNS providers up-to-date, with a built-in dashboard and zero external dependencies."
+version = "0.1.0"
+edition = { workspace = true }
+license = { workspace = true }
+authors = { workspace = true }
+repository = { workspace = true }
+homepage = { workspace = true }
+documentation = { workspace = true }
+exclude = { workspace = true }
+
+[[bin]]
+name = "ddns"
+path = "src/main.rs"
+
+
+[dependencies]
+anyhow = { workspace = true }
+tokio = { workspace = true }
+clap = { version = "4.5.39", features = ["derive", "env"] }
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+
+ddns-core = { workspace = true, features = ["ddns-provider-aliyun", "ddns-provider-cloudflare"] }
+
+# optional
+ddns-provider-aliyun = { workspace = true, optional = true }
+ddns-provider-cloudflare = { workspace = true, optional = true }
+
+[features]
+default = ["ddns-provider-aliyun", "ddns-provider-cloudflare"]
+ddns-provider-aliyun = ["dep:ddns-provider-aliyun", "ddns-core/ddns-provider-aliyun"]
+ddns-provider-cloudflare = ["dep:ddns-provider-cloudflare", "ddns-core/ddns-provider-cloudflare"]

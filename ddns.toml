@@ -1,0 +1,121 @@
+########################################
+# DDNS – Sample Configuration (full)   #
+#                                       #
+# 1. HTTP dashboard / API               #
+# 2. Scheduler                          #
+# 3. IP detection strategies            #
+# 4. DNS providers (Cloudflare / Aliyun)#
+########################################
+
+#######################
+# 1) HTTP Dashboard   #
+#######################
+[http]
+# Listening address: 0.0.0.0:8080, localhost:8080, [::]:9090 etc.
+listen = "0.0.0.0:8080"
+
+# Restrict access to loopback / RFC-1918 / fc00::/7 networks.
+# Set to false if dashboard must be exposed publicly.
+intranet_only = true
+
+# Secret used to sign JWT tokens.
+# • Must be ≥ 32 bytes (≈ 256 bit).
+# • **Never** commit real secrets—use an env-var in production:
+#     export DDNS__HTTP__JWT_SECRET="super_long_random_string"
+jwt_secret = "CHANGE_ME_32_BYTES_MIN"
+
+# Lifetime of the issued JWT token, in seconds (86400 = 24 h).
+token_ttl_sec = 86400
+
+
+###############################
+# 1.1) Optional basic login   #
+###############################
+# Delete or comment out this table to disable authentication entirely.
+[http.auth]
+# Username accepted by /login and JWT validation.
+username = "admin"
+# Plain-text password (for demo only—consider a hash in real setups).
+password = "secret123"
+
+
+#######################
+# 2) Scheduler        #
+#######################
+[scheduler]
+# Cron expression in standard “6-field” format (second, minute, hour, …).
+# Example below runs every 5 seconds (good for testing):
+cron = "*/30 * * * * *"
+
+# Max number of provider updates performed in parallel.
+# If omitted, defaults to 4.
+concurrency = 2
+
+
+##########################################
+# 3) Public-IP Detection Chain           #
+#    – Evaluated in ascending priority   #
+##########################################
+
+# 3.1 detect via external HTTP service
+[[detect]]
+priority = 10              # lower = earlier
+kind     = "http"          # http | interface | command
+url      = "https://ipinfo.io/ip"
+timeout  = 2000            # timeout in ms (optional)
+
+# 3.2 backup HTTP service
+[[detect]]
+priority = 20
+kind     = "http"
+url      = "https://api.ipify.org"
+
+# 3.3 read from a local network interface (Unix only)
+[[detect]]
+priority = 30
+kind     = "interface"
+iface    = "eth0"          # e.g. eth0 / ppp0 / enp0s3
+
+# 3.4 custom shell command
+[[detect]]
+priority = 40
+kind     = "command"
+cmd      = "curl -s https://ifconfig.me"
+timeout  = 3000
+
+
+#######################################
+# 4) DNS Providers (multiple allowed) #
+#######################################
+
+# ---------- Cloudflare ----------
+[[provider]]
+kind        = "cloudflare"   # provider driver
+alias       = "cf-home"      # arbitrary label in dashboard
+
+zone        = "example.com"  # DNS zone
+record      = "home"         # sub-domain to update
+record_type = "A"            # A | AAAA
+ttl         = 0              # 0 = “auto” (Cloudflare default)
+
+# API token with Zone:Read + DNS:Edit permissions.
+# Environment substitution `${VAR}` is supported.
+token       = "${CF_TOKEN}"
+
+
+# ---------- Aliyun ----------
+[[provider]]
+kind        = "aliyun"
+alias       = "ali-office"
+
+zone        = "example.net"
+record      = "office"
+record_type = "AAAA"
+ttl         = 60             # seconds (≥ 10)
+
+# RAM sub-account credentials
+access_key    = "${ALI_KEY}"
+access_secret = "${ALI_SEC}"
+
+# Endpoint region; omit to use “cn-hangzhou”.
+region        = "cn-hangzhou"
