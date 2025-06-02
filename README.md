@@ -1,11 +1,9 @@
 <!-- ─── Language Switch & ToC (top-right) ────────────────────────── -->
 <div align="right">
 
-<a aria-disabled="true" style="color:#999;text-decoration:none;">🇺🇸 English</a> ·
-<a href="README.zh-CN.md">🇨🇳 中文</a>
+<span style="color:#999;">🇺🇸 English</span> ·
+<a href="README.zh-CN.md">🇨🇳 中文</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Table of Contents ↗️
 
-<br/>
-Table of Contents ↗️
 </div>
 
 <h1 align="center"><code>ddns-rs</code></h1>

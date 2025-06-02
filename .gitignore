@@ -9,4 +9,4 @@ logs/
 **/*.rs.bk
 
 .aiignore
-CONTENT.md
+CONTEXT.md

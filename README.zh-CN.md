@@ -2,11 +2,7 @@
 <div align="right">
 
 <a href="README.md">🇺🇸 English</a> ·
-<a aria-disabled="true" style="color:#999;text-decoration:none;">🇨🇳 中文</a>
-
-<br/>
-目录 ↗️
-</div>
+<a aria-disabled="true" style="color:#999;text-decoration:none;">🇨🇳 中文</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 目录 ↗️
 
 <h1 align="center"><code>ddns-rs</code></h1>
 
