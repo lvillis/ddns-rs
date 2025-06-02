@@ -90,6 +90,6 @@ graph TD
 docker run --rm \
   -v $PWD/ddns.toml:/opt/app/ddns.toml \
   -p 8080:8080 \
-  -e DDNS__HTTP__JWT_SECRET=$JWT_SECRET \
+  -e DDNS_HTTP_JWT_SECRET=$JWT_SECRET \
   lvillis/ddns-rs
 ```

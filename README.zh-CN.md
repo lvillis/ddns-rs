@@ -4,6 +4,8 @@
 <a href="README.md">🇺🇸 English</a> ·
 <a aria-disabled="true" style="color:#999;text-decoration:none;">🇨🇳 中文</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 目录 ↗️
 
+</div>
+
 <h1 align="center"><code>ddns-rs</code></h1>
 
 <p align="center">
@@ -87,6 +89,6 @@ graph TD
 docker run --rm \
   -v $PWD/ddns.toml:/opt/app/ddns.toml \
   -p 8080:8080 \
-  -e DDNS__HTTP__JWT_SECRET=$JWT_SECRET \
+  -e DDNS_HTTP_JWT_SECRET=$JWT_SECRET \
   lvillis/ddns-rs
 ```
