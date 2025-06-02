@@ -2,6 +2,23 @@ services:
   ddns-rs:
     container_name: ddns-rs
     image: docker.io/lvillis/ddns-rs:latest
+    environment:
+      - DDNS_HTTP_LISTEN=0.0.0.0:8080
+      - DDNS_HTTP_AUTH_USERNAME=ddnsrs
+      - DDNS_HTTP_AUTH_PASSWORD=ddnsrs
+      # detect[0]
+      - DDNS_DETECT_0_PRIORITY=10
+      - DDNS_DETECT_0_KIND=http
+      - DDNS_DETECT_0_URL=https://ipinfo.io/ip
+      - DDNS_DETECT_0_TIMEOUT=2000
+      # provider[0] —— Cloudflare
+      - DDNS_PROVIDER_0_KIND=cloudflare
+      - DDNS_PROVIDER_0_ALIAS=cf-home
+      - DDNS_PROVIDER_0_ZONE=example.com
+      - DDNS_PROVIDER_0_RECORD=home
+      - DDNS_PROVIDER_0_RECORD_TYPE=A
+      - DDNS_PROVIDER_0_TTL=0
+      - DDNS_PROVIDER_0_TOKEN=${CF_TOKEN}
     volumes:
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped

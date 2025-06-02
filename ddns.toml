@@ -34,9 +34,9 @@ token_ttl_sec = 86400
 # Delete or comment out this table to disable authentication entirely.
 [http.auth]
 # Username accepted by /login and JWT validation.
-username = "admin"
+username = "ddnsrs"
 # Plain-text password (for demo only—consider a hash in real setups).
-password = "secret123"
+password = "ddnsrs"
 
 
 #######################
