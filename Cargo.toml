@@ -40,10 +40,10 @@ tokio = { version = "1.45.1", features = ["rt-multi-thread", "macros", "signal",
 tracing = "0.1.41"
 thiserror = "2.0.12"
 
-ddns-core = { path = "crates/ddns-core", version = "0.1.0", default-features = false }
-ddns-provider = { path = "crates/ddns-provider", version = "0.1.0" }
-ddns-provider-aliyun = { path = "crates/ddns-provider-aliyun", version = "0.1.0" }
-ddns-provider-cloudflare = { path = "crates/ddns-provider-cloudflare", version = "0.1.0" }
+ddns-core = { path = "crates/ddns-core", version = "0.1.1", default-features = false }
+ddns-provider = { path = "crates/ddns-provider", version = "0.1.1" }
+ddns-provider-aliyun = { path = "crates/ddns-provider-aliyun", version = "0.1.1" }
+ddns-provider-cloudflare = { path = "crates/ddns-provider-cloudflare", version = "0.1.1" }
 
 [workspace.lints.clippy]
 print_stdout = "warn"
