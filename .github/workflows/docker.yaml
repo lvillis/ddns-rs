@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   CONTEXT: .
   GHCR_TAG: ghcr.io/lvillis/ddns-rs:latest
