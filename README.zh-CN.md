@@ -100,7 +100,7 @@ graph TD
 ### 1. Docker
 
 ```bash
-curl -fsSL -o ddns.toml https://raw.githubusercontent.com/lvillis/ddns-rs/main/ddns.toml
+curl -fsSL -o ddns.toml https://raw.githubusercontent.com/lvillis/ddns-rs/main/ddns.example.toml
 docker run -d --name=ddns-rs \
   -p 8080:8080 \
   -v $PWD/ddns.toml:/opt/app/ddns.toml \
