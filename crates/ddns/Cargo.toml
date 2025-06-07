@@ -10,6 +10,8 @@ homepage = { workspace = true }
 documentation = { workspace = true }
 exclude = { workspace = true }
 readme = "../../README.md"
+keywords = { workspace = true }
+categories = ["network-programming", "command-line-utilities"]
 
 [[bin]]
 name = "ddns"

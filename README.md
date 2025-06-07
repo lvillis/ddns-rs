@@ -34,7 +34,7 @@
 | **Cron-based scheduler**   | Standard 6-field cron (second precision) + concurrency & back-off    |
 | **Self-hosted dashboard**  | Tailwind + Alpine, dark/light auto; Cookie & Bearer auth supported   |
 | **Zero runtime deps**      | Single static binary or multi-arch Docker image (< 10 MB)            |
-| **Env-override ready**     | Any TOML key can be overridden via `DDNS__SECTION__KEY`              |
+| **Env-override ready**     | Any TOML key can be overridden via `DDNS_SECTION_KEY`                |
 
 ## 📸 Screenshots
 

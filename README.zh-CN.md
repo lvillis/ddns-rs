@@ -34,7 +34,7 @@
 | **基于 Cron 的调度器**    | 6 字段标准 Cron（秒级）+ 并发控制 + 退避重试                        |
 | **自托管仪表盘**          | Tailwind + Alpine，自动深浅主题；支持 Cookie 和 Bearer 认证      |
 | **零运行依赖**           | 静态单文件可执行或多架构 Docker 镜像（< 10 MB）                     |
-| **环境变量覆盖**          | 任何 TOML 键都可用 `DDNS__SECTION__KEY` 覆盖                |
+| **环境变量覆盖**          | 任何 TOML 键都可用 `DDNS_SECTION_KEY` 覆盖                  |
 
 ## 📸 截图
 

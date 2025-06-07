@@ -27,6 +27,7 @@ exclude = [
     "Dockerfile",
     "docker-compose.yaml"
 ]
+keywords = ["ddns", "dns", "ddns-rs", "dynamic-dns", "cloudflare"]
 
 [workspace.dependencies]
 anyhow = "1.0.98"
