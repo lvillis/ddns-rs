@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] - 2025-06-07
+
+### ⚙️ Miscellaneous Tasks
+
+- *(ci)* Update .github\workflows\release.yaml
+- *(docs)* Update README
+
 ## [0.1.3] - 2025-06-07
 
 ### ⚙️ Miscellaneous Tasks
@@ -11,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Add .dockerignore
 - Update .gitignore
 - *(ci)* Update .github\workflows\release.yaml
+- Release version 0.1.3
 
 ## [0.1.2] - 2025-06-07
 

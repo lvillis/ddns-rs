@@ -1,7 +1,7 @@
 [package]
 name = "ddns-provider-cloudflare"
 description = "Cloudflare DNS provider for ddns-rs (A / AAAA record upsert)."
-version = "0.1.3"
+version = "0.1.4"
 edition = { workspace = true }
 license = { workspace = true }
 authors = { workspace = true }
