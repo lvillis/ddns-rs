@@ -27,14 +27,24 @@
 
 ## ✨ 功能亮点
 
-| 功能                          | 说明                                                                 |
-|-------------------------------|----------------------------------------------------------------------|
-| **多云厂商变更 (upsert)**     | 内置 Cloudflare & Aliyun 驱动；亦可通过 feature flag 添加自定义驱动 |
-| **可插拔 IP 探测器**          | HTTP · 本机网卡 · 自定义 Shell，支持优先级链                         |
-| **基于 Cron 的调度器**        | 6 字段标准 Cron（秒级）+ 并发控制 + 退避重试                         |
-| **自托管仪表盘**              | Tailwind + Alpine，自动深浅主题；支持 Cookie 和 Bearer 认证          |
-| **零运行依赖**                | 静态单文件可执行或多架构 Docker 镜像（< 10 MB）                      |
-| **环境变量覆盖**              | 任何 TOML 键都可用 `DDNS__SECTION__KEY` 覆盖                        |
+| 功能                  | 说明                                                  |
+|---------------------|-----------------------------------------------------|
+| **多云厂商变更 (upsert)** | 内置 Cloudflare & Aliyun 驱动；亦可通过 feature flag 添加自定义驱动 |
+| **可插拔 IP 探测器**      | HTTP · 本机网卡 · 自定义 Shell，支持优先级链                      |
+| **基于 Cron 的调度器**    | 6 字段标准 Cron（秒级）+ 并发控制 + 退避重试                        |
+| **自托管仪表盘**          | Tailwind + Alpine，自动深浅主题；支持 Cookie 和 Bearer 认证      |
+| **零运行依赖**           | 静态单文件可执行或多架构 Docker 镜像（< 10 MB）                     |
+| **环境变量覆盖**          | 任何 TOML 键都可用 `DDNS__SECTION__KEY` 覆盖                |
+
+## 📸 截图
+
+### 登录页
+
+![Login screen](docs/assets/login.png)
+
+### 仪表盘
+
+![Dashboard view](docs/assets/dashboard.png)
 
 ## 🖼 架构示意
 
@@ -83,12 +93,31 @@ graph TD
     classDef provider  fill:#fff8e1,stroke:#f57f17,stroke-width:1px;
 ```
 
-## 🐳 Docker
+## 🚀 部署方式
 
-```shell
-docker run --rm \
-  -v $PWD/ddns.toml:/opt/app/ddns.toml \
+> 从以下选项中 **任选其一**。示例清单位于 `deploy/` 目录。
+
+### 1. Docker
+
+```bash
+curl -fsSL -o ddns.toml https://raw.githubusercontent.com/lvillis/ddns-rs/main/ddns.toml
+docker run -d --name=ddns-rs \
   -p 8080:8080 \
-  -e DDNS_HTTP_JWT_SECRET=$JWT_SECRET \
-  lvillis/ddns-rs
+  -v $PWD/ddns.toml:/opt/app/ddns.toml \
+  -e DDNS_HTTP_JWT_SECRET="$(openssl rand -hex 32)" \
+  docker.io/lvillis/ddns-rs:latest
+```
+
+### 2. Docker Compose
+
+```bash
+curl -fsSL -o docker-compose.yaml https://raw.githubusercontent.com/lvillis/ddns-rs/main/deploy/compose/docker-compose.yaml
+docker-compose up -d
+```
+
+### 3. Kubernetes
+
+```bash
+curl -fsSL -o docker-compose.yaml https://raw.githubusercontent.com/lvillis/ddns-rs/main/deploy/k8s/ddns-rs.yaml
+kubectl apply -f ddns-rs.yaml
 ```

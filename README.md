@@ -36,6 +36,15 @@
 | **Zero runtime deps**      | Single static binary or multi-arch Docker image (< 10 MB)            |
 | **Env-override ready**     | Any TOML key can be overridden via `DDNS__SECTION__KEY`              |
 
+## 📸 Screenshots
+
+### Login
+
+![Login](docs/assets/login.png)
+
+### Dashboard
+
+![Dashboard](docs/assets/dashboard.png)
 
 ## 🖼 Architecture
 
@@ -84,12 +93,31 @@ graph TD
     classDef provider  fill:#fff8e1,stroke:#f57f17,stroke-width:1px;
 ```
 
-## 🐳 Docker
+## 🚀 Deployment
 
-```shell
-docker run --rm \
-  -v $PWD/ddns.toml:/opt/app/ddns.toml \
+> Choose **one** of the following options. Sample manifests are in `deploy/`.
+
+### 1. Docker
+
+```bash
+curl -fsSL -o ddns.toml https://raw.githubusercontent.com/lvillis/ddns-rs/main/ddns.toml
+docker run -d --name=ddns-rs \
   -p 8080:8080 \
-  -e DDNS_HTTP_JWT_SECRET=$JWT_SECRET \
-  lvillis/ddns-rs
+  -v $PWD/ddns.toml:/opt/app/ddns.toml \
+  -e DDNS_HTTP_JWT_SECRET="$(openssl rand -hex 32)" \
+  docker.io/lvillis/ddns-rs:latest
+```
+
+### 2. Docker Compose
+
+```bash
+curl -fsSL -o docker-compose.yaml https://raw.githubusercontent.com/lvillis/ddns-rs/main/deploy/compose/docker-compose.yaml
+docker-compose up -d
+```
+
+### 3. Kubernetes
+
+```bash
+curl -fsSL -o docker-compose.yaml https://raw.githubusercontent.com/lvillis/ddns-rs/main/deploy/k8s/ddns-rs.yaml
+kubectl apply -f ddns-rs.yaml
 ```

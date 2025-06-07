@@ -1,0 +1,69 @@
+# --- Optional secret: keep API token out of the manifest ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ddns-secrets
+type: Opaque
+stringData:
+  cf_token: "REPLACE_ME_WITH_REAL_TOKEN"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ddns-rs
+  labels: { app: ddns-rs }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: ddns-rs }
+  template:
+    metadata:
+      labels: { app: ddns-rs }
+    spec:
+      containers:
+        - name: ddns-rs
+          image: docker.io/lvillis/ddns-rs:latest     # choose a specific tag in production
+          imagePullPolicy: IfNotPresent
+          ports:
+            - { containerPort: 8080 }                 # HTTP dashboard
+          env:
+            # --- HTTP section ---
+            - { name: DDNS_HTTP_LISTEN,          value: "0.0.0.0:8080" }  # listen address
+            - { name: DDNS_HTTP_AUTH_USERNAME,   value: "ddnsrs" }        # basic-auth user
+            - { name: DDNS_HTTP_AUTH_PASSWORD,   value: "ddnsrs" }        # basic-auth password
+
+            # --- Detect[0] ---
+            - { name: DDNS_DETECT_0_PRIORITY,    value: "10" }            # priority (lower = earlier)
+            - { name: DDNS_DETECT_0_KIND,        value: "http" }          # kind: http / interface / command
+            - { name: DDNS_DETECT_0_URL,         value: "https://ipinfo.io/ip" }
+            - { name: DDNS_DETECT_0_TIMEOUT,     value: "2000" }          # timeout in ms
+
+            # --- Provider[0] : Cloudflare ---
+            - { name: DDNS_PROVIDER_0_KIND,      value: "cloudflare" }
+            - { name: DDNS_PROVIDER_0_ALIAS,     value: "cf-home" }       # label shown in dashboard
+            - { name: DDNS_PROVIDER_0_ZONE,      value: "example.com" }   # DNS zone
+            - { name: DDNS_PROVIDER_0_RECORD,    value: "home" }          # sub-domain
+            - { name: DDNS_PROVIDER_0_RECORD_TYPE, value: "A" }           # A / AAAA
+            - { name: DDNS_PROVIDER_0_TTL,       value: "0" }             # 0 = auto
+            - { name: DDNS_PROVIDER_0_TOKEN, valueFrom: { secretKeyRef: { name: ddns-secrets, key: cf_token } } }  # API token via Secret
+
+          volumeMounts:
+            - { name: tzdata, mountPath: /etc/localtime, readOnly: true } # keep container tz in sync
+      volumes:
+        - name: tzdata
+          hostPath:
+            path: /etc/localtime
+            type: File
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ddns-rs
+  labels: { app: ddns-rs }
+spec:
+  selector: { app: ddns-rs }
+  ports:
+    - { port: 8080, targetPort: 8080, protocol: TCP }
+  type: ClusterIP   # change to NodePort for quick external access

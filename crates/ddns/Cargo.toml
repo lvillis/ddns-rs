@@ -15,7 +15,6 @@ readme = "../../README.md"
 name = "ddns"
 path = "src/main.rs"
 
-
 [dependencies]
 anyhow = { workspace = true }
 tokio = { workspace = true }
