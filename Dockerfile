@@ -27,7 +27,7 @@ RUN set -ex \
 WORKDIR /opt/app
 
 COPY --from=builder /opt/app/target/x86_64-unknown-linux-musl/release/ddns /opt/app/ddns
-COPY ddns.toml /opt/app/ddns.toml
+COPY ddns.example.toml /opt/app/ddns.toml
 
 ENTRYPOINT ["/sbin/tini", "-s", "--"]
 CMD ["./ddns"]
