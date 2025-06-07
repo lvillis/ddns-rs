@@ -40,10 +40,10 @@ tokio = { version = "1.45.1", features = ["rt-multi-thread", "macros", "signal",
 tracing = "0.1.41"
 thiserror = "2.0.12"
 
-ddns-core = { path = "crates/ddns-core", version = "0.1.1", default-features = false }
-ddns-provider = { path = "crates/ddns-provider", version = "0.1.1" }
-ddns-provider-aliyun = { path = "crates/ddns-provider-aliyun", version = "0.1.1" }
-ddns-provider-cloudflare = { path = "crates/ddns-provider-cloudflare", version = "0.1.1" }
+ddns-core = { path = "crates/ddns-core", version = "0.1", default-features = false }
+ddns-provider = { path = "crates/ddns-provider", version = "0.1" }
+ddns-provider-aliyun = { path = "crates/ddns-provider-aliyun", version = "0.1" }
+ddns-provider-cloudflare = { path = "crates/ddns-provider-cloudflare", version = "0.1" }
 
 [workspace.lints.clippy]
 print_stdout = "warn"
@@ -59,4 +59,4 @@ tag-prefix = ""
 tag-name = "{{prefix}}{{version}}"
 tag-message = "chore: release version {{version}}"
 pre-release-commit-message = "chore: release version {{version}}"
-pre-release-hook = ["git", "cliff", "--workdir", "../", "--output", "../CHANGELOG.md", "--tag", "{{version}}"]
+pre-release-hook = ["git", "cliff", "--workdir", "../", "--output", "../../CHANGELOG.md", "--tag", "{{version}}"]
