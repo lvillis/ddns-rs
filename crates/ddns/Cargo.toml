@@ -1,7 +1,7 @@
 [package]
 name = "ddns"
 description = "Rust Dynamic-DNS (DDNS) daemon that detects your public IP and automatically upserts A/AAAA records on Cloudflare or custom providers, featuring a self-hosted web dashboard and zero external dependencies."
-version = "0.1.1"
+version = "0.1.2"
 edition = { workspace = true }
 license = { workspace = true }
 authors = { workspace = true }
