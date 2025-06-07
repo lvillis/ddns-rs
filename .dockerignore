@@ -1,0 +1,53 @@
+# Build artifacts
+target
+**/target
+
+# Cargo vendor cache
+.cargo/registry
+.cargo/git
+
+# Local binaries
+release
+*.exe
+*.dll
+*.dylib
+*.so
+
+# Version-control and CI files
+.git
+.gitignore
+.gitattributes
+.github
+.gitlab-ci.yml
+.circleci
+.travis.yml
+
+# IDE settings
+.vscode
+.idea
+*.iml
+*.sublime*
+*.code-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+*.log
+
+# Documentation
+docs
+book
+*.md
+*.adoc
+
+# Tests, benches, examples
+tests
+benches
+examples
+
+# Environment files
+.env
+.env.*
