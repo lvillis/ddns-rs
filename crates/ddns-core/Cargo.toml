@@ -35,7 +35,7 @@ ddns-provider = { workspace = true }
 # optional
 ddns-provider-aliyun = { workspace = true, optional = true }
 ddns-provider-cloudflare = { workspace = true, optional = true }
-toml = "0.9.4"
+toml = "0.9.5"
 
 [target.'cfg(unix)'.dependencies]
 pnet_datalink = "0.35.0"
