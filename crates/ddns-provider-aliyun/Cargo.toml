@@ -23,7 +23,7 @@ hmac = "0.12"
 sha1 = "0.10"
 base64 = "0.22.1"
 percent-encoding = "2.3.1"
-uuid = { version = "1.17.0", features = ["v4"] }
+uuid = { version = "1.18.0", features = ["v4"] }
 
 ddns-provider = { workspace = true }
 
