@@ -20,7 +20,7 @@ path = "src/main.rs"
 [dependencies]
 anyhow = { workspace = true }
 tokio = { workspace = true }
-clap = { version = "4.5.43", features = ["derive", "env"] }
+clap = { version = "4.5.45", features = ["derive", "env"] }
 tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
 
 ddns-core = { workspace = true, features = ["ddns-provider-aliyun", "ddns-provider-cloudflare"] }
