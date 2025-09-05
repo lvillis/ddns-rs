@@ -22,7 +22,7 @@ chrono = { workspace = true, default-features = false, features = ["clock"] }
 hmac = "0.12"
 sha1 = "0.10"
 base64 = "0.22.1"
-percent-encoding = "2.3.1"
+percent-encoding = "2.3.2"
 uuid = { version = "1.17.0", features = ["v4"] }
 
 ddns-provider = { workspace = true }
