@@ -1,3 +1,8 @@
+## [0.1.6] - 2025-09-19
+
+### ⚙️ Miscellaneous Tasks
+
+- Update ci
 ## [0.1.5] - 2025-09-19
 
 ### 🐛 Bug Fixes
@@ -15,6 +20,7 @@
 - Add .editorconfig
 - Add .gitattributes
 - Update .editorconfig
+- Release version 0.1.5
 ## [0.1.4] - 2025-06-07
 
 ### ⚙️ Miscellaneous Tasks
