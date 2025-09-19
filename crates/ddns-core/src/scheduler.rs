@@ -28,6 +28,7 @@ const BACKOFF_SECS: u64 = 5; // exponential back-off base (seconds)
 struct ProviderEntry {
     key: String,
     prov: Arc<dyn DnsProvider>,
+    ttl: u32,
 }
 
 /*──────── entry point ────────*/
@@ -99,7 +100,7 @@ async fn one_cycle(
         let mut st = status.write();
         st.now = Utc::now();
         st.current_ip = Some(ip.clone());
-        st.next_tick = cron_sched.map(|s| s.after(&st.now).next()).flatten();
+        st.next_tick = cron_sched.and_then(|s| s.after(&st.now).next());
     }
     let _ = bus.send(Event::Status(status.read().clone()));
     let _ = bus.send(Event::Log(format!("detected IP {ip}")));
@@ -129,13 +130,14 @@ async fn retry_update(
     status: SharedStatus,
     bus: EventBus,
 ) {
-    let ProviderEntry { key, prov } = entry;
+    let ProviderEntry { key, prov, ttl } = entry;
     let mut attempt = 0;
     loop {
-        let _permit = sem.acquire().await.unwrap();
-        let res = prov
-            .upsert_record(prov.zone(), prov.record(), prov.record_type(), ip, 60)
-            .await;
+        let res = {
+            let _permit = sem.acquire().await.unwrap();
+            prov.upsert_record(prov.zone(), prov.record(), prov.record_type(), ip, ttl)
+                .await
+        };
 
         match res {
             Ok(_) => {
@@ -162,15 +164,11 @@ async fn retry_update(
 
 /*──────── Provider initialization ────────*/
 fn init_providers(cfg: &AppConfig, status: &SharedStatus) -> Result<Vec<ProviderEntry>> {
-    use crate::status::ProviderStat;
-
     /* ensure keys exist in shared status */
     {
         let mut st = status.write();
         for p in &cfg.provider {
-            st.providers
-                .entry(display_key(p))
-                .or_insert_with(ProviderStat::default);
+            st.providers.entry(display_key(p)).or_default();
         }
     }
 
@@ -212,6 +210,7 @@ fn init_providers(cfg: &AppConfig, status: &SharedStatus) -> Result<Vec<Provider
         v.push(ProviderEntry {
             key: display_key(p),
             prov,
+            ttl: p.ttl,
         });
     }
     Ok(v)
@@ -222,13 +221,9 @@ fn display_key(p: &ProviderCfg) -> String {
 }
 
 /*──────── status helper ────────*/
-use crate::status::ProviderStat;
 fn set_stat(status: &SharedStatus, key: &str, ok: Option<DateTime<Utc>>, err: Option<String>) {
     let mut st = status.write();
-    let ent = st
-        .providers
-        .entry(key.to_owned())
-        .or_insert_with(ProviderStat::default);
+    let ent = st.providers.entry(key.to_owned()).or_default();
     if let Some(t) = ok {
         ent.last_ok = Some(t);
         ent.last_err = None;

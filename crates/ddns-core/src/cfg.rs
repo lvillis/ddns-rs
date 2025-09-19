@@ -2,7 +2,7 @@
 
 use anyhow::Result;
 use config::builder::{ConfigBuilder, DefaultState};
-use config::{Config, Environment, File};
+use config::{Config, File};
 use serde::{Deserialize, de::DeserializeOwned};
 use std::{collections::HashMap, env, path::Path};
 use validator::Validate;
