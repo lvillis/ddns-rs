@@ -3,6 +3,7 @@
 ### ⚙️ Miscellaneous Tasks
 
 - Update ci
+- Release version 0.1.6
 ## [0.1.5] - 2025-09-19
 
 ### 🐛 Bug Fixes
