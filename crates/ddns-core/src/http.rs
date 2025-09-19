@@ -111,20 +111,19 @@ async fn auth_guard(
         .map(|s| s.to_owned());
 
     /* 2) Cookie: ddns_token=... */
-    if token_opt.is_none() {
-        if let Some(raw) = req
+    if token_opt.is_none()
+        && let Some(raw) = req
             .headers()
             .get(header::COOKIE)
             .and_then(|v| v.to_str().ok())
-        {
-            for kv in raw.split(';') {
-                let mut it = kv.trim().splitn(2, '=');
-                if let (Some(k), Some(v)) = (it.next(), it.next()) {
-                    if k == "ddns_token" {
-                        token_opt = Some(v.to_owned());
-                        break;
-                    }
-                }
+    {
+        for kv in raw.split(';') {
+            let mut it = kv.trim().splitn(2, '=');
+            if let (Some(k), Some(v)) = (it.next(), it.next())
+                && k == "ddns_token"
+            {
+                token_opt = Some(v.to_owned());
+                break;
             }
         }
     }
