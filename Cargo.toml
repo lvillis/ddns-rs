@@ -32,7 +32,7 @@ keywords = ["ddns", "dns", "ddns-rs", "dynamic-dns", "cloudflare"]
 [workspace.dependencies]
 anyhow = "1.0.99"
 async-trait = "0.1.89"
-chrono = { version = "0.4.41", default-features = false }
+chrono = { version = "0.4.42", default-features = false }
 once_cell = "1.21.3"
 reqwest = { version = "0.12.23", default-features = false, features = ["rustls-tls"] }
 serde = { version = "1.0.225", features = ["derive"] }
