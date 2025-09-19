@@ -450,7 +450,7 @@ dependencies = [
 
 [[package]]
 name = "ddns"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "anyhow",
  "clap",
@@ -463,7 +463,7 @@ dependencies = [
 
 [[package]]
 name = "ddns-core"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "anyhow",
  "axum",
@@ -491,7 +491,7 @@ dependencies = [
 
 [[package]]
 name = "ddns-provider"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "async-trait",
  "reqwest",
@@ -500,7 +500,7 @@ dependencies = [
 
 [[package]]
 name = "ddns-provider-aliyun"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -520,7 +520,7 @@ dependencies = [
 
 [[package]]
 name = "ddns-provider-cloudflare"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "anyhow",
  "async-trait",
