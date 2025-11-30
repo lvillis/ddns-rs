@@ -12,7 +12,7 @@ exclude = { workspace = true }
 
 [dependencies]
 anyhow = { workspace = true }
-axum = "0.8.4"
+axum = "0.8.6"
 config = "0.15.16"
 chrono = { workspace = true, features = ["serde", "clock"] }
 reqwest = { workspace = true, features = ["rustls-tls-webpki-roots"] }
