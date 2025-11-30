@@ -1,4 +1,4 @@
-FROM rust:1.90.0 AS builder
+FROM rust:1.91.1 AS builder
 
 RUN set -ex \
         \
