@@ -18,7 +18,7 @@ RUN set -ex \
     && cargo build --release --target=x86_64-unknown-linux-musl
 
 
-FROM alpine:3.22.1 AS runtime
+FROM alpine:3.23.0 AS runtime
 
 RUN set -ex \
         \
